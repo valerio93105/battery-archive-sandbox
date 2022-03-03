@@ -4,8 +4,11 @@ SLASH = "/"
 
 DEGREE = 3
 CELL_LIST_FILE_NAME = "cell_list.xlsx"
-TEST_DB_URL = "sqlite:///tests/test_data/01_raw/tmp/bas-test.db"
+TEST_DB_URL = "sqlite:///tests/test_data/db/bas-test.db"
+LIVE_DB_URL = "<your-db-string>"
 
+DB_URL = LIVE_DB_URL
+GA_API_HOST = ""
 
 class TEST_TYPE(Enum):
     """
