@@ -343,6 +343,15 @@ class ArchiveOperator:
     def get_all_cycle_meta_with_id(self, cell_id):
         return self.get_all_data_from_table_with_id(CycleMeta, cell_id)
 
+    def get_df_cycle_stats_with_id(self, cell_id):
+        return self.get_df_with_id(CycleStats, cell_id)
+
+    def get_all_cycle_stats(self):
+        return self.get_all_data_from_table(CycleStats)
+
+    def get_all_cycle_stats_with_id(self, cell_id):
+        return self.get_all_data_from_table_with_id(CycleStats, cell_id)
+
     def get_all_cycle_ts(self):
         return self.get_all_data_from_table(CycleTimeSeries)
 
