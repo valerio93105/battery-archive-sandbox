@@ -155,7 +155,25 @@ class CycleStats(Model):
     cycle_index = Column(Integer, nullable=True)
     test_time = Column(Float, nullable=True)
     cell_id = Column(TEXT, nullable=False)
-
+    def to_dict(self):
+        return {
+            "index": self.index,
+            "v_max": self.v_max,
+            "v_min": self.v_min,
+            "ah_c": self.ah_c,
+            "ah_d": self.ah_d,
+            "e_c": self.e_c,
+            "e_d": self.e_d,
+            "i_max": self.i_max,
+            "i_min": self.i_min,
+            "v_c_mean": self.v_c_mean,
+            "v_d_mean": self.v_d_mean,
+            "e_eff": self.e_eff,
+            "ah_eff": self.ah_eff,
+            "cycle_index": self.cycle_index,
+            "test_time": self.test_time,
+            "cell_id": self.cell_id
+        }
 
 class CycleTimeSeries(Model):
     __tablename__ = ARCHIVE_TABLE.CYCLE_TS.value
