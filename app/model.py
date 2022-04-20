@@ -197,7 +197,7 @@ class CycleTimeSeries(Model):
 Archive Operator
 - Manages objects in Archive
 - Supports Create/Read/Update/Delete of ArchiveCells
-- For example, methods accept ArchiveCell(s) as input and provides ArchiveCell(s) as output 
+- For example, methods accept ArchiveCell(s) as input and provides ArchiveCell(s) as output
 - Performs all necessary SQL functions related to Archive db
 """
 
@@ -233,7 +233,7 @@ class ArchiveOperator:
                             chunksize=1000,
                             index=False)
 
-    def add_ts_to_db(self, cell): 
+    def add_ts_to_db(self, cell):
         _, df_timeseries = cell.stat
         df_timeseries.to_sql(cell.test_ts_table,
                              con=self.session.bind,
@@ -270,6 +270,57 @@ class ArchiveOperator:
         for cell in cell_list:
             self.add_cell_to_db(cell)
         return True
+
+    def add_cell_md_to_db(self, body):
+        body["ah"] = float(body["ah"])
+        df_cell_md = pd.DataFrame(body, index=[0])
+        df_cell_md.to_sql(ARCHIVE_TABLE.CELL_META.value,
+                            con=self.session.bind,
+                            if_exists="append",
+                            chunksize=1000,
+                            index=False)
+
+    def update_cell_md_in_db(self, body, cell_id):
+        self.session.query(CellMeta).filter(CellMeta.cell_id == cell_id).update(body)
+        self.session.commit()
+
+
+    # def remove_cell_md_in_db(self, cell_id):
+    #     #this technically orphans timeseries should proabably clean that up too
+    #     self.remove_cell_from_table(CellMeta, cell_id)
+
+    def add_cycle_md_to_db(self, body):
+        df_cycle_md = pd.DataFrame(body, index=[0])
+        df_cycle_md.to_sql(ARCHIVE_TABLE.CYCLE_META.value,
+                            con=self.session.bind,
+                            if_exists="append",
+                            chunksize=1000,
+                            index=False)
+
+    def add_abuse_md_to_db(self, body):
+        df_cycle_md = pd.DataFrame(body, index=[0])
+        df_cycle_md.to_sql(ARCHIVE_TABLE.ABUSE_META.value,
+                            con=self.session.bind,
+                            if_exists="append",
+                            chunksize=1000,
+                            index=False)
+
+    def update_cycle_md_in_db(self, body, cell_id):
+        self.session.query(CycleMeta).filter(CycleMeta.cell_id == cell_id).update(body)
+        self.session.commit()
+
+    def update_abuse_md_in_db(self, body, cell_id):
+        self.session.query(AbuseMeta).filter(AbuseMeta.cell_id == cell_id).update(body)
+        self.session.commit()
+
+
+    # def remove_cycle_md_in_db(self, cell_id):
+    #     #this technically orphans timeseries should proabably clean that up too
+    #     self.remove_cell_from_table(CycleMeta, cell_id)
+
+    # def remove_abuse_md_in_db(self, cell_id):
+    #     #this technically orphans timeseries should proabably clean that up too
+    #     self.remove_cell_from_table(AbuseMeta, cell_id)
 
     def remove_cell_from_table(self, table, cell_id):
         self.session.query(table).filter(table.cell_id == cell_id).delete()

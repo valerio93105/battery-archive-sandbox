@@ -122,6 +122,30 @@ def get_cell_with_id(cell_id):
     result = [cell.to_dict() for cell in archive_cells]
     return jsonify(result)
 
+def update_cell_md(cell_id):
+    body = request.json
+    print(body)
+    body["ah"] = float(body["ah"])
+    ao = ArchiveOperator()
+    ao.update_cell_md_in_db(body, cell_id)
+
+    return 200
+
+def create_cell_md(cell_id):
+    ao = ArchiveOperator()
+    body = request.json
+    print(body)
+    ao.add_cell_md_to_db(body)
+    #need to define method to only update cell metatdata in
+    # metadata table with with body
+    return 200
+
+def delete_cell_archive(cell_id, test_name):
+    # ao = ArchiveOperator()
+    # ao.remove_cell_md_in_db(cell_id)
+    ArchiveOperator().remove_cell_from_archive(cell_id)
+    return 200
+
 
 def get_test(test_name):
     """
@@ -168,6 +192,29 @@ def get_meta_with_id(cell_id, test_name):
         archive_cells = ArchiveOperator().get_all_abuse_meta_with_id(cell_id)
         result = [cell.to_dict() for cell in archive_cells]
         return jsonify(result)
+
+
+def update_test_md(cell_id, test_name):
+    body = request.json
+    for key in body:
+        body[key] = float(body[key])
+    if test_name == TEST_TYPE.CYCLE.value:
+        ArchiveOperator().update_cycle_md_in_db(cell_id, body)
+    if test_name == TEST_TYPE.ABUSE.value:
+        ArchiveOperator().update_abuse_md_in_db(cell_id, body)
+    return 200
+
+
+def create_test_md(cell_id, test_name):
+    body = request.json
+    for key in body:
+        if key!="cell_id":
+            body[key] = float(body[key])
+    if test_name == TEST_TYPE.CYCLE.value:
+        ArchiveOperator().add_cycle_md_to_db(body)
+    if test_name == TEST_TYPE.ABUSE.value:
+        ArchiveOperator().add_abuse_md_to_db(body)
+    return 200
 
 
 def add_cell():
@@ -227,7 +274,7 @@ def export_cycle_meta_data_with_id_to_fmt(cell_id: str,
 """
 generate_timeseries_data queries data from the database and exports to csv
 
-:param session: Database session that 
+:param session: Database session that
 :param cell_id: Absolute Path to the cell_list directory
 :param path: Path to the cell_list directory
 :return: Boolean True if successful False if method fails

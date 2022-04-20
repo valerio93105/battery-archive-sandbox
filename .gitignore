@@ -1,6 +1,7 @@
 *__pycache__
 node_modules/
 *.DS_Store
+*.icloud
 env
 battery-blc-library.yaml
 .vscode

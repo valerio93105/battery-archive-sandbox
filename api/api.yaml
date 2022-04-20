@@ -19,7 +19,7 @@ paths:
               schema:
                 type: string
           content:
-            application/json:    
+            application/json:
               schema:
                 $ref: "#/components/schemas/Cells"
         default:
@@ -85,7 +85,7 @@ paths:
                   type: string
               required:
                 - token
-        
+
       responses:
         '200':
           description: Publish
@@ -127,13 +127,13 @@ paths:
               schema:
                 type: string
           content:
-            application/json:    
+            application/json:
               schema:
                 type: object
                 properties:
                   tracker:
                     type: string
-                    example: "uuid_abc_123"        
+                    example: "uuid_abc_123"
         default:
           description: unexpected error
           content:
@@ -165,7 +165,7 @@ paths:
               schema:
                 type: string
           content:
-            application/json:    
+            application/json:
               schema:
                 $ref: "#/components/schemas/Cells"
         default:
@@ -217,7 +217,7 @@ paths:
               schema:
                 type: string
           content:
-            application/json:    
+            application/json:
               schema:
                 $ref: "#/components/schemas/Cells"
         default:
@@ -226,6 +226,93 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+    put:
+      summary: Update a cell
+      x-openapi-router-controller: app.controllers.cell_controller
+      operationId: update_cell_md
+      parameters:
+      - name: cell_id
+        in: path
+        description: Cell ID of the resource to get
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        required: true
+        description: Update Cell Metadata Settings
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                anode:
+                  type: string
+                cathode:
+                  type: string
+                source:
+                  type: string
+                form_factor:
+                  type: string
+                ah:
+                  type: string
+      responses:
+        '200':
+          description: Cell Updated
+    post:
+      summary: Create cell metadata
+      x-openapi-router-controller: app.controllers.cell_controller
+      operationId: create_cell_md
+      parameters:
+      - name: cell_id
+        in: path
+        description: Cell ID of the resource to get
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        required: true
+        description: Cell metadata
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                anode:
+                  type: string
+                cathode:
+                  type: string
+                source:
+                  type: string
+                form_factor:
+                  type: string
+                ah:
+                  type: string
+      responses:
+        '200':
+          description: Cell Created
+    delete:
+      summary: Deletes cell with cell_id
+      x-openapi-router-controller: app.controllers.cell_controller
+      operationId: delete_cell_archive
+      tags:
+        - cells
+      parameters:
+      - name: cell_id
+        in: path
+        description: Cell ID of the resource to get
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Deleted cell
+
   /cells/all/tests/{test_name}/meta:
     get:
       summary: Fetches tests of testname
@@ -251,7 +338,7 @@ paths:
               schema:
                 type: string
           content:
-            application/json:    
+            application/json:
               schema:
                 $ref: "#/components/schemas/Cells"
         default:
@@ -285,7 +372,7 @@ paths:
               schema:
                 type: string
           content:
-            application/json:    
+            application/json:
               schema:
                 $ref: "#/components/schemas/Cells"
         default:
@@ -327,7 +414,7 @@ paths:
               schema:
                 type: string
           content:
-            application/json:    
+            application/json:
               schema:
                 $ref: "#/components/schemas/Cells"
         default:
@@ -369,7 +456,7 @@ paths:
               schema:
                 type: string
           content:
-            application/json:    
+            application/json:
               schema:
                 $ref: "#/components/schemas/Cells"
         default:
@@ -378,6 +465,125 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+    put:
+      summary: Update meta
+      x-openapi-router-controller: app.controllers.cell_controller
+      operationId: update_test_md
+      parameters:
+      - name: cell_id
+        in: path
+        description: Cell ID of the resource to get
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: test_name
+        in: path
+        description: Test Name of the resource to get
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        required: true
+        description: Update Cell Metadata Settings
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                temperature:
+                  type: string
+                soc_max:
+                  type: string
+                soc_min:
+                  type: string
+                v_max:
+                  type: string
+                v_min:
+                  type: string
+                c_crate:
+                  type: string
+                d_crate:
+                  type: string
+      responses:
+        '200':
+          description: Cycle Metadata Updated
+    post:
+      summary: Create Cycle metadata
+      x-openapi-router-controller: app.controllers.cell_controller
+      operationId: create_test_md
+      parameters:
+      - name: cell_id
+        in: path
+        description: Cell ID of the resource to get
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: test_name
+        in: path
+        description: Test Name of the resource to get
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      requestBody:
+        required: true
+        description: Cell metadata
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                temperature:
+                  type: string
+                soc_max:
+                  type: string
+                soc_min:
+                  type: string
+                v_max:
+                  type: string
+                v_min:
+                  type: string
+                c_crate:
+                  type: string
+                d_crate:
+                  type: string
+      responses:
+        '200':
+          description: Cycle Metadata Created
+    delete:
+      summary: Deletes cycle metadata associated with cell_id
+      x-openapi-router-controller: app.controllers.cell_controller
+      operationId: delete_cell_archive
+      tags:
+        - cells
+      parameters:
+      - name: cell_id
+        in: path
+        description: Cell ID of the resource to get
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: test_name
+        in: path
+        description: Test Name of the resource to get
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Deleted cycle metadata
+
 components:
   schemas:
     Path:
@@ -410,3 +616,4 @@ components:
           format: int32
         message:
           type: string
+
