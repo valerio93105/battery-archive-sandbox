@@ -61,24 +61,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-    post:
-      summary: Add a new cell
-      x-openapi-router-controller: app.controllers.cell_controller
-      operationId: add_cell
-      requestBody:
-        required: true
-        description: Path to CellList File
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                path:
-                  type: string
-      responses:
-        '200':
-          description: Added new cell
-
   /cells/{cell_id}/meta:
     get:
       summary: Fetches cell with cell_id
